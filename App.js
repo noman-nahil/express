@@ -18,8 +18,15 @@ app.get('/api/students', (req, res) => {
     });
 });
 app.post('/api/students', (req, res) => {
-    console.log(req.body);
-    res.send("Posted");
+    const student = req.body;
+    fs.readFile('./db.json', 'utf-8', (err, data) => {
+        const students = JSON.parse(data);
+        students.students.push(student);
+        fs.writeFile('./db.json', JSON.stringify(students), (err) => {
+            res.send(student);
+        })
+    })
+
 });
 
 
