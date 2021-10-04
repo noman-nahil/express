@@ -8,7 +8,7 @@ app.use(express.json());
 
 //Named Function
 
-const StudentList = (req, res) => {
+const studentList = (req, res) => {
     db.getStudentData()
         .then(students => {
             res.send(students);
@@ -87,15 +87,24 @@ const deleteStudent = (req, res) => {
         })
 }
 
+//Refactoring the routes
+app.route('/api/students')
+    .get(studentList)
+    .post(newStudent);
+
+app.route('/api/students/:id')
+    .get(studentDetails)
+    .put(newStudent).
+    delete(deleteStudent);
+
+
 //
-app.get('/', (req, res) => {
-    res.send("Hello from Express");
-});
-app.get('/api/students', StudentList);
+/*
+app.get('/api/students', studentList);
 app.post('/api/students', newStudent);
 app.get('/api/students/:id', studentDetails);
 app.put('/api/students/:id', updateStudent);
-app.delete('/api/students/:id', deleteStudent);
+app.delete('/api/students/:id', deleteStudent);*/
 
 //
 const port = 3000;
