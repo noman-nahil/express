@@ -70,6 +70,28 @@ app.put('/api/students/:id', (req, res) => {
         })
 })
 
+
+app.delete('/api/students/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    //console.log(id)
+    db.getStudentData()
+        .then(students => {
+            const student = students.find(student => student.id === id);
+            if (!student) {
+                res.status(400).send("Not Found");
+            }
+            else {
+                const updatedData = students.filter(student => student.id !== id);
+                //res.send(student);
+                db.postStudentData(updatedData)
+                    .then(data => {
+                        res.send(updatedData);
+                    })
+            }
+
+        })
+})
+
 //
 const port = 3000;
 
