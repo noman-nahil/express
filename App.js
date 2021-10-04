@@ -46,6 +46,30 @@ app.get('/api/students/:id', (req, res) => {
         })
 })
 
+app.put('/api/students/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    //console.log(id)
+    const updateInfo = req.body;
+    db.getStudentData()
+        .then(students => {
+            const student = students.find(student => student.id === id);
+            if (!student) {
+                res.status(400).send("Not Found");
+            }
+            else {
+                //res.send(updateInfo);
+                const index = students.findIndex(student => student.id === id);
+                students[index] = updateInfo;
+                db.postStudentData(students)
+                    .then(data => {
+                        res.send(updateInfo);
+                    })
+
+            }
+
+        })
+})
+
 //
 const port = 3000;
 
